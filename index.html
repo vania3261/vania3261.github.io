@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STREAM ZONE | Telegram & Twitch</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #9146FF;
+            --secondary: #0088cc;
+            --donate: #ff6b6b;
+            --accent: #00ff88;
+            --dark: #0f0f23;
+            --darker: #090915;
+            --light: #ffffff;
+            --gray: #f5f5f5;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --gradient-dark: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            --gradient-donate: linear-gradient(135deg, var(--donate) 0%, #ffa726 100%);
+        }
+
+        body {
+            background: var(--gradient-dark);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(145, 70, 255, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(145, 70, 255, 0.1) 0%, rgba(0, 136, 204, 0.05) 50%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            text-shadow: 0 0 30px rgba(145, 70, 255, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Platforms Section */
+        .platforms {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+
+        .platform-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .donate::before {
+            background: var(--gradient-donate);
+        }
+
+        .platform-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .platform-icon {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            position: relative;
+        }
+
+        .platform-icon::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        .telegram .platform-icon::after {
+            background: var(--secondary);
+        }
+
+        .twitch .platform-icon::after {
+            background: var(--primary);
+        }
+
+        .donate .platform-icon::after {
+            background: var(--donate);
+        }
+
+        .telegram .platform-icon {
+            color: var(--secondary);
+            text-shadow: 0 0 20px rgba(0, 136, 204, 0.5);
+        }
+
+        .twitch .platform-icon {
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(145, 70, 255, 0.5);
+        }
+
+        .donate .platform-icon {
+            color: var(--donate);
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .platform-card h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .platform-card p {
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 1.1rem 2.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            width: 100%;
+        }
+
+        .btn-telegram {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+        }
+
+        .btn-telegram:hover {
+            background: #0077b5;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 136, 204, 0.6);
+        }
+
+        .btn-twitch {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(145, 70, 255, 0.4);
+        }
+
+        .btn-twitch:hover {
+            background: #7c3aed;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(145, 70, 255, 0.6);
+        }
+
+        .btn-donate {
+            background: var(--donate);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-donate:hover {
+            background: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        /* Donate Section */
+        .donate-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3.5rem;
+            margin: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .donate-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-donate);
+        }
+
+        .donate-section h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-donate);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .donate-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .donate-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .donate-option {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .donate-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-donate);
+        }
+
+        .donate-option:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .donate-option i {
+            font-size: 2.5rem;
+            color: var(--donate);
+            margin-bottom: 1rem;
+        }
+
+        .donate-option .price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--donate);
+            margin: 1rem 0;
+        }
+
+        .donate-option p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Schedule Section */
+        .schedule {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3.5rem;
+            margin: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .schedule::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .schedule h2 {
+            font-size: 2.8rem;
+            margin-bottom: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .schedule-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .schedule-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1.8rem;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .schedule-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient);
+        }
+
+        .schedule-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .day {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .time {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .event {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--gradient);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            background: var(--gradient);
+            box-shadow: 0 5px 15px rgba(145, 70, 255, 0.4);
+        }
+
+        /* Анимации */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .platforms {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .platform-card {
+                padding: 2rem;
+                max-width: 100%;
+            }
+            
+            .schedule, .donate-section {
+                padding: 2rem;
+            }
+            
+            .schedule-items, .donate-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .platform-card {
+                padding: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.9rem 1.8rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">STREAM ZONE</div>
+            <p class="tagline">Лучший контент на Twitch и общение в Telegram</p>
+        </header>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Присоединяйтесь к нашему коммьюнити</h1>
+                <p>Игровые стримы, интересные беседы и активное сообщество. Будь частью нашей тусовки!</p>
+                
+                <div class="platforms">
+                    <div class="platform-card telegram floating">
+                        <i class="platform-icon fab fa-telegram"></i>
+                        <h2>Telegram</h2>
+                        <p>Присоединяйтесь к нашему Telegram-каналу! Обсуждайте стримы, делитесь мемами и находите новых друзей. Самое активное коммьюнити ждет тебя!</p>
+                        <a href="https://t.me/+QSuPYtLXM8NhYTEy" class="btn btn-telegram" target="_blank">
+                            <i class="fab fa-telegram"></i> Подписаться
+                        </a>
+                    </div>
+                    
+                    <div class="platform-card twitch floating" style="animation-delay: 2s;">
+                        <i class="platform-icon fab fa-twitch"></i>
+                        <h2>Twitch</h2>
+                        <p>Смотрите наши прямые трансляции, общайтесь в чате и получайте удовольствие от игрового процесса. Новые стримы каждый день!</p>
+                        <a href="https://www.twitch.tv/vania3261" class="btn btn-twitch" target="_blank">
+                            <i class="fab fa-twitch"></i> Подписаться
+                        </a>
+                    </div>
+
+                    <div class="platform-card donate floating" style="animation-delay: 1s;">
+                        <i class="platform-icon fas fa-heart"></i>
+                        <h2>Поддержать</h2>
+                        <p>Хочешь поддержать развитие канала? Любая помощь очень важна и мотивирует создавать больше контента!</p>
+                        <!-- ЗАМЕНИ ССЫЛКУ НА СВОЮ -->
+                        <a href="https://www.donationalerts.com/r/vania3261" class="btn btn-donate pulse" target="_blank">
+                            <i class="fas fa-donate"></i> Поддержать
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Новая секция с донатами -->
+        <section class="donate-section">
+            <h2>Поддержать стримера</h2>
+            <p>Ваша поддержка помогает улучшать качество стримов и радовать вас новым контентом!</p>
+            
+            <a href="https://www.donationalerts.com/r/vania3261" class="btn btn-donate pulse" target="_blank" style="font-size: 1.3rem; padding: 1.2rem 3rem;">
+                <i class="fas fa-star"></i> Сделать донат
+            </a>
+
+            <div class="donate-options">
+                <div class="donate-option">
+                    <i class="fas fa-coffee"></i>
+                    <div class="price">100 ₽</div>
+                    <p>Чашечка кофе</p>
+                </div>
+                <div class="donate-option">
+                    <i class="fas fa-pizza-slice"></i>
+                    <div class="price">300 ₽</div>
+                    <p>Пицца на перекус</p>
+                </div>
+                <div class="donate-option">
+                    <i class="fas fa-gamepad"></i>
+                    <div class="price">500 ₽</div>
+                    <p>Новая игра</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="schedule">
+            <h2>Расписание стримов</h2>
+            <div class="schedule-items">
+                <div class="schedule-item">
+                    <div class="day">Понедельник</div>
+                    <div class="time">20:00 - 22:00</div>
+                    <div class="event">Игровой вечер</div>
+                </div>
+                <div class="schedule-item">
+                    <div class="day">Среда</div>
+                    <div class="time">19:00 - 22:00</div>
+                    <div class="event">Новые игры</div>
+                </div>
+                <div class="schedule-item">
+                    <div class="day">Пятница</div>
+                    <div class="time">21:00 - 02:00</div>
+                    <div class="event">Ночной стрим</div>
+                </div>
+                <div class="schedule-item">
+                    <div class="day">Суббота</div>
+                    <div class="time">20:00 - 00:00</div>
+                    <div class="event">Марафон</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2025 STREAM ZONE. Все права защищены.</p>
+            <p>Присоединяйтесь к нашему сообществу!</p>
+            <div class="social-links">
+                <a href="https://t.me/+QSuPYtLXM8NhYTEy" class="social-link" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://www.twitch.tv/vania3261" class="social-link" target="_blank">
+                    <i class="fab fa-twitch"></i>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Анимация для элементов при прокрутке
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.platform-card');
+            
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.5}s`;
+            });
+            
+            // Добавляем анимацию появления при скролле
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Назначаем анимацию для карточек
+            document.querySelectorAll('.platform-card, .schedule-item, .donate-option').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
